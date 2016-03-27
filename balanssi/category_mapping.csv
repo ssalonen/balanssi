@@ -1,0 +1,9 @@
+party_regex	category	expr	free from explanation
+A21 DINING	restaurant
+finnkino	movies
+pelle peloton ( hermanni)?	outgoing transfers	t.amount < 0 and t.action in ('Tilisiirto', 'Oma siirto')
+pelle peloton ( hermanni)?	incoming payments	t.amount > 0 and t.action in ('Tilisiirto', 'Oma siirto')
+siwa	groceries
+.*	expenses	t.message == '05175 ELIELINAUKIO 3 HELSINKI'	automaattinosto
+.*	expenses	t.message == '04614 KAIVOKATU 1 HELSINKI'	automaattinosto
+.*	expenses	t.message == '05800 OTAKAARI 11 ESPOO'	automaattinosto

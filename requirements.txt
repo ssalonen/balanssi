@@ -1,0 +1,12 @@
+django
+#django-categories
+# pypi's 1.4 version contains old code not supported with django 1.9
+# 1.4 has issue https://github.com/callowayproject/django-categories/issues/112
+git+https://github.com/callowayproject/django-categories.git@master#egg=django-categories
+#django-pdb
+jupyter[notebook]
+numpy
+pandas
+rest-pandas
+importlib
+matplotlib

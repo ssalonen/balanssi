@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="https://rawgithub.com/ExactTarget/fuelux/master/lib/require.js"></script>
+<!--<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->
+
+</head>
+
+<body>
+<script type="text/javascript">
+//https://github.com/mbostock/d3/issues/1693
+require.config({
+  paths: {
+    d3: "http://d3js.org/d3.v3.min"
+  }
+});
+
+var SGN = -1
+var barValue = function(d) { return SGN * parseFloat(d['amount']); };
+
+console.log("start");
+require(['d3'], function(d3) {
+
+
+console.log("required");
+d3.csv("transactions.csv?amount__lte=0&groupby=category", render);
+
+var valueLabelWidth = 40; // space reserved for value labels (right)
+var barHeight = 20; // height of one bar
+var barLabelWidth = 100; // space reserved for bar labels
+var barLabelPadding = 5; // padding between bar and bar labels (left)
+var gridLabelHeight = 18; // space reserved for gridline labels
+var gridChartOffset = 3; // space between start of grid and first bar
+var maxBarWidth = 420; // width of the bar with the max value
+
+
+
+function render(error, data) {
+	console.log("rendering");
+
+// scales
+var yScale = d3.scale.ordinal().domain(d3.range(0, data.length)).rangeBands([0, data.length * barHeight]);
+var y = function(d, i) { return yScale(i); };
+var yText = function(d, i) { return y(d, i) + yScale.rangeBand() / 2; };
+var x = d3.scale.linear().domain([0, d3.max(data, barValue)]).range([0, maxBarWidth]);
+
+	
+    var chart = d3.select('#chart').append("svg").attr("width", 600).attr("height", 600);
+// bars
+var barsContainer = chart.append('g')
+  .attr('transform', 'translate(' + barLabelWidth + ',' + (gridLabelHeight + gridChartOffset) + ')'); 
+barsContainer.selectAll("rect").data(data).enter().append("rect")
+  .attr('y', y)
+  .attr('height', yScale.rangeBand())
+  .attr('width', function(d) { return x(barValue(d)); })
+  .attr('stroke', 'white')
+  .attr('fill', 'steelblue');
+}
+
+});
+
+
+</script>
+
+<div id='chart' />
+</div>
+
+
+</body>
+
+</html>
